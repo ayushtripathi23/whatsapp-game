@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="closeQuizSection">
     <h1>{{ getName }}'s Quiz</h1>
     <h3>Select an answer for each of the following question-</h3>
 
@@ -7,7 +7,7 @@
       <div class="modal-dialog">
         <div
           class="modal-content"
-          v-for="(question, objIndex) in questionsList"
+          v-for="(question, objIndex) in firebaseData"
           :key="objIndex"
         >
           <div class="modal-header">
@@ -18,43 +18,68 @@
             <div class="quiz" id="quiz" data-toggle="buttons">
               <label
                 class="element-animation1 btn btn-lg btn-danger btn-block"
+                @click="handleAnswerClick(question.options[index].isCorrect)"
                 v-for="(row, index) in question.options"
                 :key="index"
-                ><span
-                  @click="rightAnswer(index, question.options[index])"
-                  class="btn-label"
-                  ><i class="glyphicon glyphicon-check"></i
-                ></span>
-
+              >
                 <input
                   type="text"
                   style="width: 100%; border-radius: 1rem; color: black"
                   v-model="question.options[index].answerText"
                 />
-
-                <button
-                  type="submit"
-                  class="btn deleteButton"
-                  @click="deleteRow(question.options, index)"
-                >
-                  Delete the option
-                </button>
               </label>
-              <div class="submitButtonDiv">
-                <button
-                  type="submit"
-                  class="btn addButton"
-                  @click="addRow(objIndex)"
-                >
-                  Add an option
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="submitButtonDiv">
-        <button class="submitButton" @click="submit">Submit Answer</button>
+        <button
+          class="submitButton"
+          data-toggle="modal"
+          data-target="#myModal"
+          @click="submitScore"
+        >
+          Submit Answer
+        </button>
+      </div>
+      <div class="container">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+                <h4 class="modal-title">Your Score</h4>
+              </div>
+              <div class="modal-body">
+                <p>
+                  your score is {{ score }} / {{ this.firebaseData.length }}
+                </p>
+              </div>
+              <div class="modal-footer bottomButton">
+                <router-link to="/" style="text-decoration: none">
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                  >
+                    Create Your Own
+                  </button>
+                </router-link>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                  @click="!closeQuizSection"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -63,6 +88,7 @@
 import db from "../firebaseConfig";
 
 export default {
+  props: ["player_name"],
   data() {
     return {
       pname: "",
@@ -71,13 +97,21 @@ export default {
       answer: "",
       newInput: "",
       correctAnswer: "",
+      closeQuizSection: true,
+      score: 0,
       proId: "",
+      firebaseData: "",
+      checkid: this.$route.params.proId,
     };
   },
   created() {
-    console.log(this.getQuestions);
+    // console.log(this.getQuestions);
     this.questionsList = this.getQuestions;
     console.log(this.questionsList);
+    console.log(this.$route.params.proId);
+    this.Showblog();
+    console.log("proid", this.proId);
+    console.log("check id", this.checkid);
   },
   computed: {
     getQuestions() {
@@ -90,38 +124,52 @@ export default {
     },
   },
   methods: {
-    addRow: function (objNo) {
-      this.questionsList[objNo].options.push({
-        answerText: "",
-        isCorrect: false,
-      });
-    },
-    deleteRow: (row, objNo) => {
-      row.splice(objNo, 1);
-    },
+    Showblog() {
+      db.collection("person")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, "test 0 => ", doc.data().questions);
+            if (doc.id == this.checkid) {
+              this.firebaseData = doc.data().questions;
+              console.log("under if", this.firebaseData);
+            }
 
-    submit() {
+            this.proId = doc.id;
+            console.log("proid", this.proId);
+          });
+        });
+    },
+    submitScore() {
       console.log(this.questionsList);
       const data = {
-        questions: this.questionsList,
-        admin_name: this.$store.state.player_name,
+        score: this.score,
+        admin_id: this.checkid,
+        player_name: this.player_name,
       };
-      db.collection("person")
+      db.collection("scoreboard")
         .add(data)
         .then((doc) => {
           console.log("Document successfully written!");
           console.log(doc.id);
-          this.proId = doc.id;
         })
         .then(() => {
           console.log("form submitted", data);
           console.log("id", this.proId);
-          this.$router.push(`/game/${this.proId}`);
         })
 
         .catch((error) => {
           console.error("Error writing document: ", error);
         });
+    },
+    handleAnswerClick(isCorrect) {
+      console.log(isCorrect);
+      if (isCorrect) {
+        this.score = this.score + 1;
+        localStorage.setItem("score", this.score);
+        console.log("check score", this.score);
+      }
     },
     rightAnswer(index, object) {
       console.log(index, object);
@@ -133,6 +181,10 @@ export default {
 };
 </script>
 <style scoped>
+.bottomButton {
+  display: flex;
+  justify-content: space-between;
+}
 .submitButtonDiv {
   display: flex;
   justify-content: center;
