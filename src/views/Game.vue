@@ -30,11 +30,11 @@
               <th>Score</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-for="(item, index) in scoreBoard" :key="index">
             <tr>
               <th>Rank</th>
-              <th>{{ p_name }}</th>
-              <th>{{ p_score }}</th>
+              <th>{{ item.player_name }}</th>
+              <th>{{ item.score }}</th>
             </tr>
           </tbody>
         </table>
@@ -64,6 +64,9 @@ export default {
       p_name: "",
       game_id: "",
       linkUrl: true,
+      scoreBoard: [],
+      scoreBoardId: "",
+      paramsId: this.$route.params.proId,
     };
   },
   created() {
@@ -95,12 +98,16 @@ export default {
           querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, "test scoreboard => ", doc.data());
+
+            this.scoreBoardId = doc.data().admin_id;
+            console.log("scoreboard array", this.scoreBoard);
             if (doc.data().admin_id == this.$route.params.proId) {
+              this.scoreBoard.push(doc.data());
               this.p_name = doc.data().player_name;
               this.p_score = doc.data().score;
             }
             // console.log("proid", this.proId);
-            console.log("document data", doc.data());
+            // console.log("document data", doc.data());
             // console.log("length of scoreboard", doc.data().length);
           });
         });
@@ -112,6 +119,7 @@ export default {
           querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, "test scoreboard => ", doc.data());
+
             this.admin_name = doc.data().admin_name;
           });
         });

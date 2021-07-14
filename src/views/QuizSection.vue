@@ -173,11 +173,10 @@ export default {
         localStorage.setItem("score", this.score);
         console.log("check score", this.score);
       }
-      var cor = (document.getElementById("label-button").style.background =
-        "lightgreen");
+
       var cor1 = (document.getElementById("disable-click").style.pointerEvents =
         "none");
-      console.log(cor, cor1);
+      console.log(cor1);
     },
     rightAnswer(index, object) {
       console.log(index, object);
