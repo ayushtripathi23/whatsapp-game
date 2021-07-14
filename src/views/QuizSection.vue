@@ -103,6 +103,7 @@ export default {
       score: 0,
       proId: "",
       firebaseData: "",
+
       checkid: this.$route.params.proId,
     };
   },

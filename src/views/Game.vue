@@ -3,7 +3,7 @@
     <div class="mainHeading">
       <h1>How well do you know {{ admin_name }}</h1>
     </div>
-    <div class="gameLinkSection">
+    <div class="gameLinkSection" v-show="linkUrl">
       <label for="game">Link</label>
       <input class="gameLink" id="game" type="text" v-model="game_id" />
     </div>
@@ -63,9 +63,13 @@ export default {
       p_score: 0,
       p_name: "",
       game_id: "",
+      linkUrl: true,
     };
   },
   created() {
+    setTimeout(() => {
+      this.linkUrl = false;
+    }, 8000);
     this.Showblog();
     console.log("length", this.Showblog.length);
     this.ShowName();

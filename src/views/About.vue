@@ -29,8 +29,15 @@
 
                 <input
                   type="text"
-                  style="width: 100%; border-radius: 1rem; color: black"
+                  id="button-input"
+                  style="
+                    width: 100%;
+                    border-radius: 1rem;
+                    color: black;
+                    background-color: white;
+                  "
                   v-model="question.options[index].answerText"
+                  :disabled="readonly"
                 />
 
                 <button
@@ -45,6 +52,7 @@
                 <button
                   type="submit"
                   class="btn addButton"
+                  id="button-add"
                   @click="addRow(objIndex)"
                 >
                   Add an option
@@ -74,10 +82,12 @@ export default {
       correctAnswer: "",
       proId: "",
       gameId: "",
+      readonly: true,
     };
   },
   created() {
     console.log(this.getQuestions);
+
     this.questionsList = this.getQuestions;
     console.log(this.questionsList);
   },
@@ -93,6 +103,7 @@ export default {
   },
   methods: {
     addRow: function (objNo) {
+      this.readonly = false;
       this.questionsList[objNo].options.push({
         answerText: "",
         isCorrect: false,
@@ -130,9 +141,9 @@ export default {
       const condition = (object.isCorrect = true);
       console.log("consition => ", condition, object);
       this.correctAnswer = object;
-      var cor = (document.getElementById("button-change").style.background =
-        "lightgreen");
-      console.log(cor);
+      // var cor = (document.getElementById("button-change").style.background =
+      //   "lightgreen");
+      // console.log(cor);
     },
   },
 };
