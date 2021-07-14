@@ -1,8 +1,11 @@
 <template>
   <div v-show="closeQuizSection">
-    <h1>{{ getName }}'s Quiz</h1>
-    <h3>Select an answer for each of the following question-</h3>
-
+    <div style="display: flex; justify-content: center">
+      <h1>{{ player_name }}'s Quiz</h1>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <h3>Select an answer for each of the following question-</h3>
+    </div>
     <div class="container-fluid">
       <div class="modal-dialog">
         <div
@@ -70,6 +73,7 @@
                     Create Your Own
                   </button>
                 </router-link>
+                   <router-link to="/thank-you" style="text-decoration: none">
                 <button
                   type="button"
                   class="btn btn-default"
@@ -78,6 +82,7 @@
                 >
                   Close
                 </button>
+                   </router-link>
               </div>
             </div>
           </div>
@@ -108,6 +113,7 @@ export default {
     };
   },
   created() {
+    console.log("admin_name", this.player_name);
     // console.log(this.getQuestions);
     this.questionsList = this.getQuestions;
     console.log(this.questionsList);

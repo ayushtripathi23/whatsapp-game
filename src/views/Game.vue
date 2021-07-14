@@ -6,6 +6,7 @@
     <div class="gameLinkSection" v-show="linkUrl">
       <label for="game">Link</label>
       <input class="gameLink" id="game" type="text" v-model="game_id" />
+      <button class="copyButton" @click="myFunction">Copy Link</button>
     </div>
 
     <div class="inputForm">
@@ -18,13 +19,14 @@
       <button @click="submitName" class="buttonStyle">Get Started</button>
     </div>
     <div v-show="quizSection">
-      <Quiz :player_name="pname" />
+      <Quiz :player_name="admin_name" />
     </div>
     <div v-show="!quizSection">
       <div class="container">
         <table id="socreboard" class="table striped">
           <thead>
             <tr>
+              <th>S.No</th>
               <th>Rank</th>
               <th>Username</th>
               <th>Score</th>
@@ -32,7 +34,8 @@
           </thead>
           <tbody v-for="(item, index) in scoreBoard" :key="index">
             <tr>
-              <th>Rank</th>
+              <th>{{ index }}</th>
+              <th>Rank {{ index + 1 }}</th>
               <th>{{ item.player_name }}</th>
               <th>{{ item.score }}</th>
             </tr>
@@ -84,6 +87,12 @@ export default {
     // HelloWorld
   },
   methods: {
+    myFunction() {
+      var copyText = document.getElementById("game");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    },
     submitName() {
       this.$store.state.player_name = this.pname;
 
@@ -128,6 +137,13 @@ export default {
 };
 </script>
 <style scoped>
+.copyButton {
+  width: 100px;
+  color: white;
+  background-color: limegreen;
+  height: 22px;
+  font-size: 10px;
+}
 .gameLinkSection {
   display: flex;
 
