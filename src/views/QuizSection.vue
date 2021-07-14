@@ -15,17 +15,19 @@
           </div>
           <div class="modal-body">
             <div class="col-xs-3 5"></div>
-            <div class="quiz" id="quiz" data-toggle="buttons">
+            <div class="quiz" id="disable-click" data-toggle="buttons">
               <label
-                class="element-animation1 btn btn-lg btn-danger btn-block"
-                @click="handleAnswerClick(question.options[index].isCorrect)"
                 v-for="(row, index) in question.options"
                 :key="index"
+                class="element-animation1 btn btn-lg btn-danger btn-block"
+                id="label-button"
+                @click="handleAnswerClick(question.options[index].isCorrect)"
               >
                 <input
                   type="text"
                   style="width: 100%; border-radius: 1rem; color: black"
-                  v-model="question.options[index].answerText"
+                  :value="question.options[index].answerText"
+                  readonly
                 />
               </label>
             </div>
@@ -170,6 +172,11 @@ export default {
         localStorage.setItem("score", this.score);
         console.log("check score", this.score);
       }
+      var cor = (document.getElementById("label-button").style.background =
+        "lightgreen");
+      var cor1 = (document.getElementById("disable-click").style.pointerEvents =
+        "none");
+      console.log(cor, cor1);
     },
     rightAnswer(index, object) {
       console.log(index, object);

@@ -18,6 +18,7 @@
             <div class="quiz" id="quiz" data-toggle="buttons">
               <label
                 class="element-animation1 btn btn-lg btn-danger btn-block"
+                id="button-change"
                 v-for="(row, index) in question.options"
                 :key="index"
                 ><span
@@ -128,6 +129,9 @@ export default {
       const condition = (object.isCorrect = true);
       console.log("consition => ", condition, object);
       this.correctAnswer = object;
+      var cor = (document.getElementById("button-change").style.background =
+        "lightgreen");
+      console.log(cor);
     },
   },
 };

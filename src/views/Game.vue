@@ -62,8 +62,8 @@ export default {
   },
   created() {
     this.Showblog();
-    console.log("length", this.Showblog.length);
-    this.ShowName();
+    // console.log("length", this.Showblog.length);
+    // this.ShowName();
   },
   components: {
     Quiz,
@@ -88,9 +88,9 @@ export default {
               this.p_name = doc.data().player_name;
               this.p_score = doc.data().score;
             }
-            console.log("proid", this.proId);
+            // console.log("proid", this.proId);
             console.log("document data", doc.data());
-            console.log("length of scoreboard", doc.data().length);
+            // console.log("length of scoreboard", doc.data().length);
           });
         });
     },
