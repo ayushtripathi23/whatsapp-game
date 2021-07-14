@@ -3,6 +3,10 @@
     <div class="mainHeading">
       <h1>How well do you know {{ admin_name }}</h1>
     </div>
+    <div class="gameLinkSection">
+      <label for="game">Link</label>
+      <input class="gameLink" id="game" type="text" v-model="game_id" />
+    </div>
 
     <div class="inputForm">
       <div class="form-group">
@@ -58,12 +62,15 @@ export default {
       quizSection: false,
       p_score: 0,
       p_name: "",
+      game_id: "",
     };
   },
   created() {
     this.Showblog();
-    // console.log("length", this.Showblog.length);
-    // this.ShowName();
+    console.log("length", this.Showblog.length);
+    this.ShowName();
+    this.game_id = window.location.href;
+    console.log(window.location.href);
   },
   components: {
     Quiz,
@@ -109,6 +116,16 @@ export default {
 };
 </script>
 <style scoped>
+.gameLinkSection {
+  display: flex;
+
+  justify-content: center;
+  margin-right: 10px;
+}
+.gameLink {
+  width: 400px;
+  height: 20px;
+}
 .avatar {
   vertical-align: middle;
   width: 50px;

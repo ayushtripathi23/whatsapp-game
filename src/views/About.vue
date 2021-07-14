@@ -73,6 +73,7 @@ export default {
       newInput: "",
       correctAnswer: "",
       proId: "",
+      gameId: "",
     };
   },
   created() {
