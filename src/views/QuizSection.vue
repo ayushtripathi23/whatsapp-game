@@ -73,16 +73,16 @@
                     Create Your Own
                   </button>
                 </router-link>
-                   <router-link to="/thank-you" style="text-decoration: none">
-                <button
-                  type="button"
-                  class="btn btn-default"
-                  data-dismiss="modal"
-                  @click="!closeQuizSection"
-                >
-                  Close
-                </button>
-                   </router-link>
+                <router-link to="/thank-you" style="text-decoration: none">
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                    @click="!closeQuizSection"
+                  >
+                    Close
+                  </button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -95,10 +95,9 @@
 import db from "../firebaseConfig";
 
 export default {
-  props: ["player_name"],
+  props: ["player_name", "pname"],
   data() {
     return {
-      pname: "",
       rows: [{ select: 1, name: "ayush" }],
       questionsList: [],
       answer: "",
@@ -155,7 +154,8 @@ export default {
       const data = {
         score: this.score,
         admin_id: this.checkid,
-        player_name: this.player_name,
+        admin_name: this.player_name,
+        player_name: this.pname,
       };
       db.collection("scoreboard")
         .add(data)

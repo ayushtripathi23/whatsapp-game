@@ -19,7 +19,7 @@
       <button @click="submitName" class="buttonStyle">Get Started</button>
     </div>
     <div v-show="quizSection">
-      <Quiz :player_name="admin_name" />
+      <Quiz :player_name="admin_name" :pname="pname" />
     </div>
     <div v-show="!quizSection">
       <div class="container">
